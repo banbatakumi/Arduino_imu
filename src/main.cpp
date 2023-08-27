@@ -99,10 +99,11 @@ void setup() {
 
       digitalWrite(LED_GREEN, LOW);
 }
+
 void loop() {
       imu_get();
 
-      Serial.write('a');
+      Serial.write('H');
       Serial.write(yaw_plus);
       Serial.write(yaw_minus);
 }
