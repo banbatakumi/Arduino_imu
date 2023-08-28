@@ -44,7 +44,7 @@ int16_t yaw = 0;
 uint8_t yaw_plus = 0, yaw_minus = 0;
 
 void setup() {
-      Serial.begin(38400);   // 通信速度: 9600, 14400, 19200, 28800, 38400, 57600, 115200
+      Serial.begin(57600);   // 通信速度: 9600, 14400, 19200, 28800, 38400, 57600, 115200
 
       pinMode(A2, OUTPUT);
       pinMode(A3, OUTPUT);
