@@ -106,6 +106,7 @@ void loop() {
       Serial.write('H');
       Serial.write(yaw_plus);
       Serial.write(yaw_minus);
+      Serial.flush();
 }
 
 void imu_get() {
