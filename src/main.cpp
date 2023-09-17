@@ -44,7 +44,7 @@ int16_t yaw = 0;
 uint8_t yaw_plus = 0, yaw_minus = 0;
 
 void setup() {
-      Serial.begin(57600);   // 通信速度: 9600, 14400, 19200, 28800, 38400, 57600, 115200
+      Serial.begin(115200);   // 通信速度: 9600, 14400, 19200, 28800, 38400, 57600, 115200
 
       pinMode(A2, OUTPUT);
       pinMode(A3, OUTPUT);
@@ -103,7 +103,7 @@ void setup() {
 void loop() {
       imu_get();
 
-      Serial.write('H');
+      Serial.write(0xFF);
       Serial.write(yaw_plus);
       Serial.write(yaw_minus);
       Serial.flush();
