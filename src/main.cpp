@@ -2,10 +2,6 @@
 
 #include "MPU6050_6Axis_MotionApps612.h"
 
-#define LINE_AVERAGE_NUMBER 100
-#define LINE_REACTION_VALUE 100
-#define MOTOR_RC 0.25
-
 const uint8_t LED_RED = 16;
 const uint8_t LED_GREEN = 17;
 
@@ -39,9 +35,6 @@ void dmpDataReady() {
 }
 
 void imu_get();
-
-int16_t yaw = 0;
-uint8_t yaw_plus = 0, yaw_minus = 0;
 
 void setup() {
       Serial.begin(57600);   // 通信速度: 9600, 14400, 19200, 28800, 38400, 57600, 115200
@@ -103,6 +96,11 @@ void setup() {
 void loop() {
       imu_get();
 
+      int16_t yaw = ypr[0] * 180 / M_PI;
+      uint8_t yaw_plus = yaw >= 0 ? yaw : 0;
+      uint8_t yaw_minus = yaw < 0 ? yaw * -1 : 0;
+
+      // UART送信
       Serial.write(0xFF);
       Serial.write(yaw_plus);
       Serial.write(yaw_minus);
@@ -115,10 +113,5 @@ void imu_get() {
             mpu.dmpGetQuaternion(&q, fifoBuffer);
             mpu.dmpGetGravity(&gravity, &q);
             mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-            yaw_plus = 0;
-            yaw_minus = 0;
-            yaw = ypr[0] * 180 / M_PI;
-            yaw_plus = yaw > 0 ? yaw : 0;
-            yaw_minus = yaw < 0 ? yaw * -1 : 0;
       }
 }
