@@ -37,7 +37,7 @@ void dmpDataReady() {
 void imu_get();
 
 void setup() {
-      Serial.begin(57600);   // 通信速度: 9600, 14400, 19200, 28800, 38400, 57600, 115200
+      Serial.begin(115200);   // 通信速度: 9600, 14400, 19200, 28800, 38400, 57600, 115200
 
       pinMode(A2, OUTPUT);
       pinMode(A3, OUTPUT);
