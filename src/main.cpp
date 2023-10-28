@@ -2,6 +2,8 @@
 
 #include "MPU6050_6Axis_MotionApps612.h"
 
+#define CHANGE_TO_DEG 57.2957795131
+
 const uint8_t LED_RED = 16;
 const uint8_t LED_GREEN = 17;
 
@@ -33,8 +35,6 @@ volatile bool mpuInterrupt = false;   // indicates whether MPU interrupt pin has
 void dmpDataReady() {
       mpuInterrupt = true;
 }
-
-void imu_get();
 
 void setup() {
       Serial.begin(115200);   // 通信速度: 9600, 14400, 19200, 28800, 38400, 57600, 115200
@@ -90,28 +90,28 @@ void setup() {
       // get expected DMP packet size for later comparison
       packetSize = mpu.dmpGetFIFOPacketSize();
 
+      TIMSK0 = 0;   // Timer0の停止(時間管理が使えなくなる)
+
       digitalWrite(LED_GREEN, LOW);
 }
 
 void loop() {
-      imu_get();
+      while (1) {   // 呼び出しのオーバーヘッド節減
+            if (!dmpReady) return;
+            if (mpu.dmpGetCurrentFIFOPacket(fifoBuffer)) {   // Get the Latest packet
+                  mpu.dmpGetQuaternion(&q, fifoBuffer);
+                  mpu.dmpGetGravity(&gravity, &q);
+                  mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
+            }
 
-      int16_t yaw = ypr[0] * 180 / M_PI;
-      uint8_t yaw_plus = yaw >= 0 ? yaw : 0;
-      uint8_t yaw_minus = yaw < 0 ? yaw * -1 : 0;
+            int16_t yaw = ypr[0] * CHANGE_TO_DEG;
+            uint8_t yaw_plus = yaw >= 0 ? yaw : 0;
+            uint8_t yaw_minus = yaw < 0 ? yaw * -1 : 0;
 
-      // UART送信
-      Serial.write(0xFF);
-      Serial.write(yaw_plus);
-      Serial.write(yaw_minus);
-      Serial.flush();
-}
-
-void imu_get() {
-      if (!dmpReady) return;
-      if (mpu.dmpGetCurrentFIFOPacket(fifoBuffer)) {   // Get the Latest packet
-            mpu.dmpGetQuaternion(&q, fifoBuffer);
-            mpu.dmpGetGravity(&gravity, &q);
-            mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
+            // UART送信
+            Serial.write(0xFF);
+            Serial.write(yaw_plus);
+            Serial.write(yaw_minus);
+            Serial.flush();
       }
 }
