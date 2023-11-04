@@ -112,6 +112,7 @@ void loop() {
             Serial.write(0xFF);
             Serial.write(yaw_plus);
             Serial.write(yaw_minus);
+            Serial.write(0xAA);
             Serial.flush();
       }
 }
