@@ -109,10 +109,13 @@ void loop() {
             uint8_t yaw_minus = yaw < 0 ? yaw * -1 : 0;
 
             // UART送信
+            /*
             Serial.write(0xFF);
             Serial.write(yaw_plus);
             Serial.write(yaw_minus);
             Serial.write(0xAA);
             Serial.flush();
+            */
+            Serial.println(yaw);
       }
 }
