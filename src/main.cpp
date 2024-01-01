@@ -35,25 +35,24 @@ void setup() {
       devStatus = mpu.dmpInitialize();
 
       // supply your own gyro offsets here, scaled for min sensitivity
-      mpu.setXAccelOffset(-4516);
-      mpu.setYAccelOffset(-4105);
-      mpu.setZAccelOffset(1417);
-      mpu.setXGyroOffset(104);
+      mpu.setXAccelOffset(-4520);
+      mpu.setYAccelOffset(-4107);
+      mpu.setZAccelOffset(1420);
+      mpu.setXGyroOffset(107);
       mpu.setYGyroOffset(5);
-      mpu.setZGyroOffset(4);
+      mpu.setZGyroOffset(3);
 
-
-      if(devStatus == 0){
-            mpu.CalibrateAccel(6);
-            mpu.CalibrateGyro(6);
-            mpu.PrintActiveOffsets();
+      if (devStatus == 0) {
+            //mpu.CalibrateAccel(6);
+            //mpu.CalibrateGyro(6);
+            //mpu.PrintActiveOffsets();
 
             mpu.setDMPEnabled(true);
 
             packetSize = mpu.dmpGetFIFOPacketSize();
 
             digitalWrite(LED_GREEN, LOW);
-      }else{
+      } else {
             digitalWrite(LED_RED, HIGH);
       }
 }
@@ -71,13 +70,9 @@ void loop() {
             uint8_t yaw_minus = yaw < 0 ? yaw * -1 : 0;
 
             // UART送信
-            /*
             Serial.write(0xFF);
             Serial.write(yaw_plus);
             Serial.write(yaw_minus);
             Serial.write(0xAA);
-            Serial.flush();
-            */
-            Serial.println(yaw);
       }
 }
