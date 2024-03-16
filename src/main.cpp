@@ -36,16 +36,16 @@ void setup() {
       devStatus = mpu.dmpInitialize();
 
       // supply your own gyro offsets here, scaled for min sensitivity
-      mpu.setXAccelOffset(-7823);
-      mpu.setYAccelOffset(-1292);
-      mpu.setZAccelOffset(1180);
-      mpu.setXGyroOffset(7);
-      mpu.setYGyroOffset(44);
-      mpu.setZGyroOffset(14);
+      mpu.setXAccelOffset(-4503);
+      mpu.setYAccelOffset(-4148);
+      mpu.setZAccelOffset(1424);
+      mpu.setXGyroOffset(110);
+      mpu.setYGyroOffset(3);
+      mpu.setZGyroOffset(2);
 
       if (devStatus == 0) {
-            mpu.CalibrateAccel(6);
-            mpu.CalibrateGyro(6);
+            mpu.CalibrateAccel(3);
+            mpu.CalibrateGyro(3);
             mpu.PrintActiveOffsets();
 
             mpu.setDMPEnabled(true);
