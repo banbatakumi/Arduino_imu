@@ -36,17 +36,17 @@ void setup() {
       devStatus = mpu.dmpInitialize();
 
       // supply your own gyro offsets here, scaled for min sensitivity
-      mpu.setXAccelOffset(-7823);
-      mpu.setYAccelOffset(-1298);
-      mpu.setZAccelOffset(1090);
-      mpu.setXGyroOffset(12);
-      mpu.setYGyroOffset(32);
-      mpu.setZGyroOffset(14);
+      mpu.setXAccelOffset(-4507);
+      mpu.setYAccelOffset(-4123);
+      mpu.setZAccelOffset(1415);
+      mpu.setXGyroOffset(107);
+      mpu.setYGyroOffset(5);
+      mpu.setZGyroOffset(-1);
 
       if (devStatus == 0) {
-            mpu.CalibrateAccel(3);
-            mpu.CalibrateGyro(3);
-            mpu.PrintActiveOffsets();
+            // mpu.CalibrateAccel(3);
+            // mpu.CalibrateGyro(3);
+            // mpu.PrintActiveOffsets();
 
             mpu.setDMPEnabled(true);
 
@@ -66,14 +66,18 @@ void loop() {
                   mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
             }
 
-            int16_t yaw = ypr[0] * CHANGE_TO_DEG;
-            uint8_t yaw_plus = yaw >= 0 ? yaw : 0;
-            uint8_t yaw_minus = yaw < 0 ? yaw * -1 : 0;
+            int16_t yaw = ypr[0] * CHANGE_TO_DEG * 10 + 1800;
+            int16_t pitch = ypr[2] * CHANGE_TO_DEG * 10 + 1800;
+            int16_t roll = ypr[1] * CHANGE_TO_DEG * 10 + 1800;
 
             // UART送信
             Serial.write(0xFF);
-            Serial.write(yaw_plus);
-            Serial.write(yaw_minus);
+            Serial.write((uint8_t)((yaw & 0xFF00) >> 8));
+            Serial.write((uint8_t)(yaw & 0x00FF));
+            Serial.write((uint8_t)((pitch & 0xFF00) >> 8));
+            Serial.write((uint8_t)(pitch & 0x00FF));
+            Serial.write((uint8_t)((roll & 0xFF00) >> 8));
+            Serial.write((uint8_t)(roll & 0x00FF));
             Serial.write(0xAA);
       }
 }
