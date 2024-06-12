@@ -36,16 +36,24 @@ void setup() {
       devStatus = mpu.dmpInitialize();
 
       // supply your own gyro offsets here, scaled for min sensitivity
-      mpu.setXAccelOffset(-4507);
-      mpu.setYAccelOffset(-4123);
-      mpu.setZAccelOffset(1415);
-      mpu.setXGyroOffset(107);
-      mpu.setYGyroOffset(5);
-      mpu.setZGyroOffset(-1);
+      // robot1
+      // mpu.setXAccelOffset(-7819);
+      // mpu.setYAccelOffset(-1313);
+      // mpu.setZAccelOffset(1131);
+      // mpu.setXGyroOffset(0);
+      // mpu.setYGyroOffset(12);
+      // mpu.setZGyroOffset(12);
+      // robot2
+      mpu.setXAccelOffset(-7819);
+      mpu.setYAccelOffset(-1313);
+      mpu.setZAccelOffset(1131);
+      mpu.setXGyroOffset(-7);
+      mpu.setYGyroOffset(6);
+      mpu.setZGyroOffset(12);
 
       if (devStatus == 0) {
-            // mpu.CalibrateAccel(3);
-            // mpu.CalibrateGyro(3);
+            // mpu.CalibrateAccel(5);
+            // mpu.CalibrateGyro(5);
             // mpu.PrintActiveOffsets();
 
             mpu.setDMPEnabled(true);
@@ -71,13 +79,13 @@ void loop() {
             int16_t roll = ypr[1] * CHANGE_TO_DEG * 10 + 1800;
 
             // UART送信
-            Serial.write(0xFF);
-            Serial.write((uint8_t)((yaw & 0xFF00) >> 8));
-            Serial.write((uint8_t)(yaw & 0x00FF));
-            Serial.write((uint8_t)((pitch & 0xFF00) >> 8));
-            Serial.write((uint8_t)(pitch & 0x00FF));
-            Serial.write((uint8_t)((roll & 0xFF00) >> 8));
-            Serial.write((uint8_t)(roll & 0x00FF));
-            Serial.write(0xAA);
+             Serial.write(0xFF);
+             Serial.write((uint8_t)((yaw & 0xFF00) >> 8));
+             Serial.write((uint8_t)(yaw & 0x00FF));
+             Serial.write((uint8_t)((pitch & 0xFF00) >> 8));
+             Serial.write((uint8_t)(pitch & 0x00FF));
+             Serial.write((uint8_t)((roll & 0xFF00) >> 8));
+             Serial.write((uint8_t)(roll & 0x00FF));
+             Serial.write(0xAA);
       }
 }
