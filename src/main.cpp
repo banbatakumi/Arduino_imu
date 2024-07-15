@@ -64,6 +64,7 @@ void setup() {
       } else {
             High(LED_RED);
       }
+      TIMSK0 = 0;
 }
 
 void loop() {
@@ -72,20 +73,21 @@ void loop() {
                   mpu.dmpGetQuaternion(&q, fifoBuffer);
                   mpu.dmpGetGravity(&gravity, &q);
                   mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
+
+                  int16_t yaw = ypr[0] * CHANGE_TO_DEG * 10 + 1800;
+                  int16_t pitch = ypr[2] * CHANGE_TO_DEG * 10 + 1800;
+                  int16_t roll = ypr[1] * CHANGE_TO_DEG * 10 + 1800;
+
+                  // UART送信
+                  // Serial.write(0xFF);
+                  // Serial.write((uint8_t)((yaw & 0xFF00) >> 8));
+                  // Serial.write((uint8_t)(yaw & 0x00FF));
+                  // Serial.write((uint8_t)((pitch & 0xFF00) >> 8));
+                  // Serial.write((uint8_t)(pitch & 0x00FF));
+                  // Serial.write((uint8_t)((roll & 0xFF00) >> 8));
+                  // Serial.write((uint8_t)(roll & 0x00FF));
+                  // Serial.write(0xAA);
+                  Serial.println(yaw);
             }
-
-            int16_t yaw = ypr[0] * CHANGE_TO_DEG * 10 + 1800;
-            int16_t pitch = ypr[2] * CHANGE_TO_DEG * 10 + 1800;
-            int16_t roll = ypr[1] * CHANGE_TO_DEG * 10 + 1800;
-
-            // UART送信
-             Serial.write(0xFF);
-             Serial.write((uint8_t)((yaw & 0xFF00) >> 8));
-             Serial.write((uint8_t)(yaw & 0x00FF));
-             Serial.write((uint8_t)((pitch & 0xFF00) >> 8));
-             Serial.write((uint8_t)(pitch & 0x00FF));
-             Serial.write((uint8_t)((roll & 0xFF00) >> 8));
-             Serial.write((uint8_t)(roll & 0x00FF));
-             Serial.write(0xAA);
       }
 }
